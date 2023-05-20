@@ -1,0 +1,69 @@
+version: '2.1'
+
+services:
+  mariadb-galera-1: &cluster
+    image: docker.io/bitnami/mariadb-galera:latest
+    networks:
+      - galera-network
+    volumes:
+      - mariadb_galera_data-1:/bitnami/mariadb
+    environment: &env
+      MARIADB_GALERA_CLUSTER_NAME: Galera Cluster
+      MARIADB_GALERA_MARIABACKUP_USER: backuper
+      MARIADB_GALERA_MARIABACKUP_PASSWORD: backuper_password
+      MARIADB_ROOT_PASSWORD: my_root_password
+      MARIADB_GALERA_CLUSTER_BOOTSTRAP: "yes"
+      MARIADB_USER: ghost
+      MARIADB_PASSWORD: ghost_password
+      MARIADB_DATABASE: ghost_cms
+      MARIADB_REPLICATION_USER: replication_user
+      MARIADB_REPLICATION_PASSWORD: replication_passwor
+      MARIADB_GALERA_FORCE_SAFETOBOOTSTRAP: "yes"
+      MARIADB_GALERA_CLUSTER_ADDRESS: "gcomm://mariadb-galera-1:4567,mariadb-galera-2:4567,mariadb-galera-3:4567"
+    healthcheck:
+      test: ['CMD', '/opt/bitnami/scripts/mariadb-galera/healthcheck.sh']
+      interval: 15s
+      timeout: 5s
+      retries: 6
+    restart: on-failure
+
+  mariadb-galera-2:
+    <<: *cluster
+    environment:
+       <<: *env
+       MARIADB_GALERA_CLUSTER_BOOTSTRAP: "no"
+       MARIADB_GALERA_CLUSTER_ADDRESS: "gcomm://mariadb-galera-1:4567,mariadb-galera-2:4567,mariadb-galera-3:4567"
+
+    volumes:
+      - mariadb_galera_data-2:/bitnami/mariadb
+
+  mariadb-galera-3:
+    <<: *cluster
+    environment:
+       <<: *env
+       MARIADB_GALERA_CLUSTER_BOOTSTRAP: "no"
+       MARIADB_GALERA_CLUSTER_ADDRESS: "gcomm://mariadb-galera-1:4567,mariadb-galera-2:4567,mariadb-galera-3:4567"
+    volumes:
+      - mariadb_galera_data-3:/bitnami/mariadb
+
+  proxysql:
+    image: severalnines/proxysql
+    networks:
+      - galera-network
+    volumes:
+      - ./proxysql.cnf:/etc/proxysql.cnf:ro
+    restart: unless-stopped
+
+
+volumes:
+  mariadb_galera_data-1:
+    driver: local
+  mariadb_galera_data-2:
+    driver: local
+  mariadb_galera_data-3:
+    driver: local
+
+networks:
+  galera-network:
+    driver: bridge
+    attachable: true
