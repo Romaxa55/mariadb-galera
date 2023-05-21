@@ -43,7 +43,7 @@ mysql_galera_hostgroups =
         backup_writer_hostgroup=20
         reader_hostgroup=10
         offline_hostgroup=9999
-        max_writers=0
+        max_writers=1
         writer_is_also_reader=1
         max_transactions_behind=30
         active=1
@@ -53,10 +53,10 @@ mysql_galera_hostgroups =
 mysql_servers =
 (
     { address="mariadb-galera-1" , port=3306 , hostgroup=10, max_connections=100 },
-    { address="mariadb-galera-2" , port=3306 , hostgroup=10, max_connections=100 },
-    { address="mariadb-galera-3" , port=3306 , hostgroup=10, max_connections=100 },
-    { address="mariadb-galera-4" , port=3306 , hostgroup=10, max_connections=100 },
-    { address="mariadb-galera-5" , port=3306 , hostgroup=10, max_connections=100 }
+    { address="mariadb-galera-2" , port=3306 , hostgroup=20, max_connections=100 },
+    { address="mariadb-galera-3" , port=3306 , hostgroup=20, max_connections=100 },
+    { address="mariadb-galera-4" , port=3306 , hostgroup=20, max_connections=100 },
+    { address="mariadb-galera-5" , port=3306 , hostgroup=20, max_connections=100 }
 )
 
 
@@ -65,33 +65,26 @@ mysql_query_rules =
     {
         rule_id=100
         active=1
-        match_pattern="^SELECT .* FOR UPDATE"
-        destination_hostgroup=10
-        apply=1
-    },
-    {
-        rule_id=200
-        active=1
         match_pattern="^SELECT .*"
         destination_hostgroup=30
         apply=1
     },
     {
-        rule_id=300
+        rule_id=200
         active=1
         match_pattern="^INSERT .*"
         destination_hostgroup=10
         apply=1
     },
     {
-        rule_id=400
+        rule_id=300
         active=1
         match_pattern="^UPDATE .*"
         destination_hostgroup=10
         apply=1
     },
     {
-        rule_id=500
+        rule_id=400
         active=1
         match_pattern="^DELETE .*"
         destination_hostgroup=10
