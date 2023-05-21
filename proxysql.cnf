@@ -94,4 +94,5 @@ mysql_query_rules =
 
 mysql_users =
 (
-    { username = "ghost", password = "ghost_password", default_hostgroup = 10, transaction_persistent = 0, active =
+    { username = "ghost", password = "ghost_password", default_hostgroup = 10, transaction_persistent = 0, active = 1 },
+)
