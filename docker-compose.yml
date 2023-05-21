@@ -60,11 +60,11 @@ services:
         constraints: [node.role == manager]
       labels:
         - traefik.enable=true
-        - traefik.http.routers.portainer.tls=true
-        - traefik.http.routers.portainer.rule=Host(`proxysql.roshamagin.site`)
-        - traefik.http.routers.portainer.entrypoints=websecure
-        - traefik.http.routers.portainer.tls.certresolver=myresolver
-        - traefik.http.services.portainer.loadbalancer.server.port=6080
+        - traefik.http.routers.proxysql.tls=true
+        - traefik.http.routers.proxysql.rule=Host(`proxysql.roshamagin.site`)
+        - traefik.http.routers.proxysql.entrypoints=websecure
+        - traefik.http.routers.proxysql.tls.certresolver=myresolver
+        - traefik.http.services.proxysql.loadbalancer.server.port=6080
 
 
 volumes:
