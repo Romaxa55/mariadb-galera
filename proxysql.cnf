@@ -2,17 +2,17 @@ datadir="/var/lib/proxysql"
 
 admin_variables=
 {
-    admin_credentials="admin:admin"
+    admin_credentials="newadmin:newpassword"
     mysql_ifaces="0.0.0.0:6032"
     refresh_interval=2000
     web_enabled=true
     web_port=6080
-    stats_credentials="stats:admin"
+    stats_credentials="stats:newpassword"
 }
 
 mysql_variables=
 {
-    threads=4
+    threads=6
     max_connections=2048
     default_query_delay=0
     default_query_timeout=36000000
@@ -41,10 +41,10 @@ mysql_galera_hostgroups =
     {
         writer_hostgroup=10
         backup_writer_hostgroup=20
-        reader_hostgroup=30
+        reader_hostgroup=10
         offline_hostgroup=9999
-        max_writers=1
-        writer_is_also_reader=2
+        max_writers=0
+        writer_is_also_reader=1
         max_transactions_behind=30
         active=1
     }
@@ -53,11 +53,12 @@ mysql_galera_hostgroups =
 mysql_servers =
 (
     { address="mariadb-galera-1" , port=3306 , hostgroup=10, max_connections=100 },
-    { address="mariadb-galera-2" , port=3306 , hostgroup=30, max_connections=100 },
-    { address="mariadb-galera-3" , port=3306 , hostgroup=30, max_connections=100 },
-    { address="mariadb-galera-4" , port=3306 , hostgroup=30, max_connections=100 },
-    { address="mariadb-galera-5" , port=3306 , hostgroup=30, max_connections=100 }
+    { address="mariadb-galera-2" , port=3306 , hostgroup=10, max_connections=100 },
+    { address="mariadb-galera-3" , port=3306 , hostgroup=10, max_connections=100 },
+    { address="mariadb-galera-4" , port=3306 , hostgroup=10, max_connections=100 },
+    { address="mariadb-galera-5" , port=3306 , hostgroup=10, max_connections=100 }
 )
+
 
 mysql_query_rules =
 (
@@ -78,7 +79,21 @@ mysql_query_rules =
     {
         rule_id=300
         active=1
-        match_pattern=".*"
+        match_pattern="^INSERT .*"
+        destination_hostgroup=10
+        apply=1
+    },
+    {
+        rule_id=400
+        active=1
+        match_pattern="^UPDATE .*"
+        destination_hostgroup=10
+        apply=1
+    },
+    {
+        rule_id=500
+        active=1
+        match_pattern="^DELETE .*"
         destination_hostgroup=10
         apply=1
     }
@@ -86,5 +101,4 @@ mysql_query_rules =
 
 mysql_users =
 (
-    { username = "ghost", password = "ghost_password", default_hostgroup = 10, transaction_persistent = 0, active = 1 },
-)
+    { username = "ghost", password = "ghost_password", default_hostgroup = 10, transaction_persistent = 0, active =
