@@ -50,6 +50,7 @@ services:
     image: severalnines/proxysql
     networks:
       - galera-network
+      - public
     volumes:
       - ./proxysql.cnf:/etc/proxysql.cnf:ro
     deploy:
@@ -78,3 +79,5 @@ networks:
   galera-network:
     driver: overlay
     attachable: true
+  public:
+    external: true
