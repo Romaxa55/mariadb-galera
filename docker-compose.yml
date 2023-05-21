@@ -78,6 +78,7 @@ services:
         - traefik.http.routers.proxysql.rule=Host(`proxysql.roshamagin.site`)
         - traefik.http.routers.proxysql.entrypoints=websecure
         - traefik.http.routers.proxysql.tls.certresolver=myresolver
+        - traefik.http.routers.proxysql.tls.passthrough=true
         - traefik.http.services.proxysql.loadbalancer.server.port=6080
 
 
