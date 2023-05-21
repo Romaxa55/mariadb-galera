@@ -19,7 +19,7 @@ services:
       MARIADB_REPLICATION_USER: replication_user
       MARIADB_REPLICATION_PASSWORD: replication_passwor
       MARIADB_GALERA_FORCE_SAFETOBOOTSTRAP: "yes"
-      MARIADB_GALERA_CLUSTER_ADDRESS: "gcomm://mariadb-galera-1:4567,mariadb-galera-2:4567,mariadb-galera-3:4567"
+      MARIADB_GALERA_CLUSTER_ADDRESS: "gcomm://mariadb-galera-1:4567,mariadb-galera-2:4567,mariadb-galera-3:4567,mariadb-galera-4:4567,mariadb-galera-5:4567"
     healthcheck:
       test: ['CMD', '/opt/bitnami/scripts/mariadb-galera/healthcheck.sh']
       interval: 15s
@@ -32,7 +32,6 @@ services:
     environment:
        <<: *env
        MARIADB_GALERA_CLUSTER_BOOTSTRAP: "no"
-       MARIADB_GALERA_CLUSTER_ADDRESS: "gcomm://mariadb-galera-1:4567,mariadb-galera-2:4567,mariadb-galera-3:4567"
 
     volumes:
       - mariadb_galera_data-2:/bitnami/mariadb
@@ -42,9 +41,24 @@ services:
     environment:
        <<: *env
        MARIADB_GALERA_CLUSTER_BOOTSTRAP: "no"
-       MARIADB_GALERA_CLUSTER_ADDRESS: "gcomm://mariadb-galera-1:4567,mariadb-galera-2:4567,mariadb-galera-3:4567"
     volumes:
       - mariadb_galera_data-3:/bitnami/mariadb
+
+  mariadb-galera-4:
+    <<: *cluster
+    environment:
+       <<: *env
+       MARIADB_GALERA_CLUSTER_BOOTSTRAP: "no"
+    volumes:
+      - mariadb_galera_data-4:/bitnami/mariadb
+
+  mariadb-galera-5:
+    <<: *cluster
+    environment:
+       <<: *env
+       MARIADB_GALERA_CLUSTER_BOOTSTRAP: "no"
+    volumes:
+      - mariadb_galera_data-5:/bitnami/mariadb
 
   proxysql:
     image: severalnines/proxysql
@@ -74,7 +88,10 @@ volumes:
     driver: local
   mariadb_galera_data-3:
     driver: local
-
+  mariadb_galera_data-4:
+    driver: local
+  mariadb_galera_data-5:
+    driver: local
 networks:
   galera-network:
     driver: overlay

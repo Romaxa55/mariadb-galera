@@ -54,7 +54,9 @@ mysql_servers =
 (
     { address="mariadb-galera-1" , port=3306 , hostgroup=10, max_connections=100 },
     { address="mariadb-galera-2" , port=3306 , hostgroup=10, max_connections=100 },
-    { address="mariadb-galera-3" , port=3306 , hostgroup=10, max_connections=100 }
+    { address="mariadb-galera-3" , port=3306 , hostgroup=30, max_connections=100 }
+    { address="mariadb-galera-4" , port=3306 , hostgroup=30, max_connections=100 }
+    { address="mariadb-galera-5" , port=3306 , hostgroup=30, max_connections=100 }
 )
 
 mysql_query_rules =
