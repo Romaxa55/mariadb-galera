@@ -93,6 +93,8 @@ services:
   cron:
     image: schnitzler/mysqldump
     restart: always
+    networks:
+      galera-network:
     volumes:
       - ./bin/crontab:/var/spool/cron/crontabs/root
       - ./bin/backup:/usr/local/bin/backup
@@ -107,6 +109,8 @@ services:
 
   backup:
     image: busybox
+    networks:
+      galera-network:
     volumes:
       - ./backup:/backup
 
