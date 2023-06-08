@@ -102,8 +102,8 @@ services:
     command: ["-l", "8", "-d", "8"]
     environment:
       MYSQL_HOST: mariadb-galera-1
-      MYSQL_USER: backuper
-      MYSQL_PASSWORD: backuper_password
+      MYSQL_USER: ghost
+      MYSQL_PASSWORD: ghost_password
       MYSQL_DATABASE: ghost_cms
 
   backup:
