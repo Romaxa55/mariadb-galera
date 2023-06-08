@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   mariadb-galera-1: &cluster
-    image: docker.io/bitnami/mariadb-galera:latest
+    image: docker.io/bitnami/mariadb-galera:10.9.7
     networks:
       - galera-network
     volumes:
@@ -61,7 +61,7 @@ services:
 #      - mariadb_galera_data-5:/bitnami/mariadb
 
   proxysql:
-    image: severalnines/proxysql
+    image: percona/proxysql2:2.5.1
     networks:
       - galera-network
       - public
