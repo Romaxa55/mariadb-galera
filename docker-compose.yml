@@ -123,6 +123,7 @@ volumes:
 
 networks:
   galera-network:
+    name: galera-network
     driver: overlay
     attachable: true
     ipam:
