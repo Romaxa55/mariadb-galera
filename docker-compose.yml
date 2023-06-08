@@ -90,6 +90,25 @@ services:
         - traefik.http.services.proxysql.loadbalancer.server.port=6080
         - traefik.http.services.proxysql.loadbalancer.server.scheme=https
 
+  cron:
+    image: schnitzler/mysqldump
+    restart: always
+    volumes:
+      - ./bin/crontab:/var/spool/cron/crontabs/root
+      - ./bin/backup:/usr/local/bin/backup
+    volumes_from:
+      - backup
+    command: ["-l", "8", "-d", "8"]
+    environment:
+      MYSQL_HOST: mariadb-galera-1
+      MYSQL_USER: backuper
+      MYSQL_PASSWORD: backuper_password
+      MYSQL_DATABASE: ghost_cms
+
+  backup:
+    image: busybox
+    volumes:
+      - ./backup:/backup
 
 volumes:
   mariadb_galera_data-1:
