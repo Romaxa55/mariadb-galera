@@ -71,7 +71,7 @@ services:
     image: percona/proxysql2:2.5.1
     networks:
       galera-network:
-        ipv4_address: 172.20.0.50
+        ipv4_address: 172.20.0.100
       public:
     volumes:
       - ./proxysql.cnf:/etc/proxysql.cnf:ro
