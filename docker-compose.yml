@@ -68,7 +68,7 @@ services:
 #      - mariadb_galera_data-5:/bitnami/mariadb
 
   proxysql:
-    image: percona/proxysql2:2.5.2
+    image: percona/proxysql2:2.5.1
     networks:
       galera-network:
         ipv4_address: 172.20.0.50
