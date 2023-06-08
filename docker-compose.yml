@@ -98,8 +98,7 @@ services:
     volumes:
       - ./bin/crontab:/var/spool/cron/crontabs/root
       - ./bin/backup:/usr/local/bin/backup
-    volumes_from:
-      - backup
+      - ./backup:/backup
     command: ["-l", "8", "-d", "8"]
     environment:
       MYSQL_HOST: mariadb-galera-1
