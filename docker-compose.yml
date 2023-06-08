@@ -4,7 +4,8 @@ services:
   mariadb-galera-1: &cluster
     image: docker.io/bitnami/mariadb-galera:10.9.7
     networks:
-      - galera-network
+      galera-network:
+        ipv4_address: 172.20.0.10
     volumes:
       - mariadb_galera_data-1:/bitnami/mariadb
     environment: &env
@@ -33,7 +34,9 @@ services:
     environment:
        <<: *env
        MARIADB_GALERA_CLUSTER_BOOTSTRAP: "no"
-
+    networks:
+      galera-network:
+        ipv4_address: 172.20.0.20
     volumes:
       - mariadb_galera_data-2:/bitnami/mariadb
 
@@ -42,6 +45,9 @@ services:
     environment:
        <<: *env
        MARIADB_GALERA_CLUSTER_BOOTSTRAP: "no"
+    networks:
+      galera-network:
+        ipv4_address: 172.20.0.30
     volumes:
       - mariadb_galera_data-3:/bitnami/mariadb
 
@@ -64,8 +70,9 @@ services:
   proxysql:
     image: percona/proxysql2:2.5.1
     networks:
-      - galera-network
-      - public
+      galera-network:
+        ipv4_address: 172.20.0.50
+      public:
     volumes:
       - ./proxysql.cnf:/etc/proxysql.cnf:ro
     deploy:
@@ -91,13 +98,13 @@ volumes:
     driver: local
   mariadb_galera_data-3:
     driver: local
-#  mariadb_galera_data-4:
-#    driver: local
-#  mariadb_galera_data-5:
-#    driver: local
+
 networks:
   galera-network:
     driver: overlay
     attachable: true
+    ipam:
+     config:
+       - subnet: 172.20.0.0/16
   public:
     external: true
