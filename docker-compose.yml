@@ -9,6 +9,7 @@ services:
       - mariadb_galera_data-1:/bitnami/mariadb
     environment: &env
       MARIADB_GALERA_CLUSTER_NAME: Galera Cluster
+      MARIADB_EXTRA_FLAGS: --max-connect-errors=1000 --max_connections=500
       MARIADB_GALERA_MARIABACKUP_USER: backuper
       MARIADB_GALERA_MARIABACKUP_PASSWORD: backuper_password
       MARIADB_ROOT_PASSWORD: my_root_password
